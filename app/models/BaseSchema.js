@@ -13,17 +13,17 @@ const extend = require('util')._extend;
 
 class BaseSchema extends mongoose.Schema {
 
-    constructor(options){
+    constructor(fields){
         /**
          * Extend with basic schema attributes
          */
 
-        extend(options, {
-            disabled: { type: Boolean, default: false },
-            createdAt: { type: Date, default: Date.now },
-            updatedAt: Date
+        extend(fields, {
+            _objectId: { type: String, unique: true, sparse: true },
+            _source: { type: mongoose.Schema.Types.Mixed },
+            disabled: { type: Boolean, default: false }
         });
-        super(options);
+        super(fields, { id: false, timestamps: true });
 
         /**
          * Configuration
@@ -31,28 +31,23 @@ class BaseSchema extends mongoose.Schema {
 
         let schema = this;
 
-        schema.role = '';
-        schema._defaultJSONOptions = {virtuals: true, versionKey: false};
-
         schema.virtual('objectId').get(function(){ return this._id;});
-        schema.set('toJSON', schema._defaultJSONOptions);
+        schema.set('toJSON', {virtuals: true});
 
         /**
          * Middleware hook
          */
 
-        schema.pre("save", function(next){
-            this.updatedAt = Date.now();
-            this.markModified("updatedAt");
-            next();
-        });
+        schema.pre("save", BaseSchema.buildHook(preSaveParamTransformer));
+        schema.pre("update", BaseSchema.buildHook(preUpdateParamTransformer));
+        schema.pre("findOneAndUpdate", BaseSchema.buildHook(preUpdateParamTransformer));
 
         /**
          * Instance methods of mongoose.model instance object(i.e. document)
          */
 
         schema.methods = {
-            setRole,
+            _defaultTransformer,
             _toJSON
         };
 
@@ -60,7 +55,9 @@ class BaseSchema extends mongoose.Schema {
          * Static methods of mongoose.model 
          */
 
-        schema.statics = {};
+        schema.statics = {
+            defaultQueryDecorator
+        };
 
         /**
          * Validations
@@ -87,17 +84,58 @@ class BaseSchema extends mongoose.Schema {
 }
 
 /**
+ * Hook implements
+ */
+
+function preSaveParamTransformer(){
+    this.updatedAt = Date.now();
+    this.markModified("updatedAt");
+}
+
+function preUpdateParamTransformer(){
+    const criteria = this.getUpdate();
+
+    // dismiss null string
+    Object.keys(criteria).forEach(function(attr){
+        if(criteria[attr] === '' || criteria[attr] === null) delete criteria[attr];
+    });
+
+    Object.keys(criteria.$set).forEach(function(attr){
+        if(criteria.$set[attr] === '' || criteria.$set[attr] === null) delete criteria.$set[attr];
+    });
+}
+
+/**
  * Model instance method implements
  */
 
 function _toJSON(role){
-    
-    return this.toJSON({ transform: fn, virtuals: true, versionKey: false});
+    let fn; 
+    if(role && this[role+'Transformer']) fn = this[role+'Transformer'];
+    else if(this.defaultTransformer) fn = this.defaultTransformer;
+
+    let ret = this.toJSON({ transform: _defaultTransformer, virtuals: true});
+    return fn.bind(this)(this, ret);
+
 }
 
-function setRole(role){
-    this.role = role;
-    return this;
+function _defaultTransformer(doc, ret, options){
+    Object.keys(ret).forEach(attr => ret[attr] = ret[attr] instanceof Date ? ret[attr].toISOString() : ret[attr]);
+    delete ret._id;
+    delete ret.id;
+    delete ret._objectId;
+    delete ret._source;
+    delete ret.password;
+    delete ret.disabled;
+    return ret;
+}
+
+/**
+ * Static instance method implements
+ */
+
+function defaultQueryDecorator(q){
+    return q.limit(50);
 }
 
 /**

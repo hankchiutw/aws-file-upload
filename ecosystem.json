@@ -1,7 +1,7 @@
 {
   "apps" : [
     {
-      "name": "node-express-mongoose-seed-"+process.env.NODE_ENV || 'dev',
+      "name": "aws-file-upload-"+process.env.NODE_ENV || 'dev',
       "script": "app.js",
       "node_args": "--harmony",
       "watch": ['app', 'config', 'lib', 'app.js', '*.json'],
@@ -16,24 +16,24 @@
       "user": "deploy",
       "host": "api-test",
       "ref": "origin/prod",
-      "repo": "git@github.com:kwela/node-express-mongoose-seed.git",
-      "path": "/var/app/node-express-mongoose-seed/prod",
+      "repo": "git@github.com:kwela/aws-file-upload.git",
+      "path": "/var/app/aws-file-upload/prod",
       "post-deploy": "npm install; npm run doc ; NODE_ENV=prod pm2 startOrRestart ecosystem.json"
     },
     "beta": {
       "user": "deploy",
       "host": "api-test",
       "ref": "origin/beta",
-      "repo": "git@github.com:kwela/node-express-mongoose-seed.git",
-      "path": "/var/app/node-express-mongoose-seed/beta",
+      "repo": "git@github.com:kwela/aws-file-upload.git",
+      "path": "/var/app/aws-file-upload/beta",
       "post-deploy": "npm install; npm run doc ; NODE_ENV=beta pm2 startOrRestart ecosystem.json"
     },
     "test": {
       "user": "deploy",
       "host": "api-test",
       "ref": "origin/test",
-      "repo": "git@github.com:kwela/node-express-mongoose-seed.git",
-      "path": "/var/app/node-express-mongoose-seed/test",
+      "repo": "git@github.com:kwela/aws-file-upload.git",
+      "path": "/var/app/aws-file-upload/test",
       "post-deploy": "npm install; npm run doc ; NODE_ENV=test pm2 startOrRestart ecosystem.json"
     }
   }

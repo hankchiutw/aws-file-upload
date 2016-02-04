@@ -1,13 +1,13 @@
 {
-  "name": "node-express-mongoose-seed",
+  "name": "aws-file-upload",
   "version": "1.0.0",
-  "description": "platform server",
+  "description": "file upload server",
   "main": "app.js",
   "directories": {
     "doc": "docs"
   },
   "apidoc": {
-    "name": "node-express-mongoose-seed",
+    "name": "aws-file-upload",
     "version": "0.0.1",
     "description": "API documentation",
     "title": "API documentation",
@@ -22,10 +22,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:kwela/node-express-mongoose-seed.git"
+    "url": "git@github.com:kwela/aws-file-upload.git"
   },
   "config": {
-    "appname": "node-express-mongoose-seed",
+    "appname": "aws-file-upload",
     "host_prod": "api-test",
     "host_beta": "api-test",
     "host_test": "api-test"

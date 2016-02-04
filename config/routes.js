@@ -21,7 +21,6 @@ module.exports = function(app, auth){
 
     app.use(cors);
     app.use(res);
-    app.use(auth.initialize());
 
 /**
  * Routes
@@ -29,7 +28,6 @@ module.exports = function(app, auth){
 
     app.get('/', function(req, res){ res.ok('ok');});
 
-    require('app/routes/user')(app, auth);
     require('app/routes/file')(app, auth);
 
     app.use(errorHandler.clientErrorHandler);

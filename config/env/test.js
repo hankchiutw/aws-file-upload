@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-    db: 'mongodb://localhost/node-express-mongoose-seed-test',
+    db: 'mongodb://localhost/aws-file-upload-test',
     host: 'localhost',
     publicHostUrl: 'http://hostName/api-test',   // TBD
     port: 3020

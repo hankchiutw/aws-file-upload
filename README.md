@@ -1,8 +1,6 @@
-# API server by node.js, express.js and mongoose
+# File upload service by node.js and AWS S3 storage
 
-Process management by [pm2](http://pm2.keymetrics.io/).
-Testing by [mocha](https://mochajs.org/).
-Use node.js > 5.x for better ES6 syntax support.
+As a file upload API demo.
 
 ## Pre-install
 
