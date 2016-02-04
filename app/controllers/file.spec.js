@@ -19,6 +19,10 @@ function create(done){
     this.timeout(10000);
     var mock = {
     };
-    request(HOST_API_URL, "post", "file", mock, done)
+    request(HOST_API_URL, "post", "file", mock)
+        .attach('file', '/tmp/z.jpg')
+        .end(function(){
+            done();
+        });
 }
 

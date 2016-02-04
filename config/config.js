@@ -13,6 +13,7 @@ const extend = require('util')._extend;
 const path = require('path');
 
 const defaults = {
+    s3Bucket: 'api-bucket-01',
     dbOptions: { server: { keepAlive: 256, auto_reconnect: true } },
     thumbWidth: 300,
     maxFileSize: 20*1024*1024,   // upload limits, bytes

@@ -63,6 +63,7 @@
   "author": "Hank",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.2.33",
     "bcrypt": "^0.8.5",
     "body-parser": "^1.14.1",
     "co": "^4.6.0",

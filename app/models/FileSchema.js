@@ -14,7 +14,7 @@ const ObjectId = BaseSchema.Types.ObjectId;
 const fields = {
     size: { type: Number, min: 0, max: 100*1024*1024 }, // bytes, max 100MB
     filename: { type: String, required: true },
-    mimeType: { type: String, required: true },
+    mimetype: { type: String, required: true },
     url: { type: String },
     tags: [{ type: ObjectId, ref: 'FileTag' }],
     type: { type: String, required: true, enum: [ 'image', 'audio', 'video', 'file'] },
@@ -46,7 +46,7 @@ module.exports = Schema;
  * @apiSuccessExample Schema fields
  * size: { type: Number, min: 0, max: 100*1024*1024 }, // bytes, max 100MB
  * filename: { type: String, required: true },
- * mimeType: { type: String, required: true },
+ * mimetype: { type: String, required: true },
  * url: { type: String },
  * tags: [{ type: ObjectId, ref: 'FileTag' }],
  * type: { type: String, required: true, enum: [ 'image', 'audio', 'video', 'file'] },
